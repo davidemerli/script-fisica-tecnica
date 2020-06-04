@@ -10,4 +10,4 @@ TODO
 
 ## Copyright
 
-Copyright (c) 2020 Corso di Fisica Tecnica per Informatici 
+Copyright (c) 2020 Davide Merli & Dario Passarello, Studenti del Corso di Fisica Tecnica per Informatici 
