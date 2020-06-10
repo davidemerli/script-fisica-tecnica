@@ -1,0 +1,100 @@
+[
+  {
+    "id": "T_sat",
+    "name": "T_SAT",
+    "unit": "°C",
+    "description": "Temperatura di Saturazione",
+    "decimals": 2
+  },
+  {
+    "id": "P_sat_bar",
+    "name": "P_SAT",
+    "unit": "bar",
+    "description": "Pressione di Saturazione",
+    "decimals": 2
+  },
+  {
+    "id": "P_sat_MPa",
+    "name": "P_sat",
+    "unit": "MPa",
+    "description": "Pressione di Saturazione",
+    "decimals": 5
+  },
+  {
+    "id": "h_l",
+    "name": "h_l",
+    "unit": "kJ/kg",
+    "description": "Entalpia Specifica di Liquido Saturo",
+    "decimals": 2
+  },
+  {
+    "id": "dh",
+    "name": "dh",
+    "unit": "kJ/Kg",
+    "description": "Entalpia Specifica di Evaporazione",
+    "decimals": 2
+  },
+  {
+    "id": "h_v",
+    "name": "h_v",
+    "unit": "kJ/Kg",
+    "description": "Entalpia Specifica di Vapore Saturo",
+    "decimals": 2
+  },
+  {
+    "id": "s_l",
+    "name": "s_l",
+    "unit": "kJ/kgK",
+    "description": "Entropia Specifica di Liquido Saturo",
+    "decimals": 5
+  },
+  {
+    "id": "ds",
+    "name": "ds",
+    "unit": "kJ/KgK",
+    "description": "Entropia Specifica di Evaporazione",
+    "decimals": 5
+  },
+  {
+    "id": "s_v",
+    "name": "s_v",
+    "unit": "kJ/KgK",
+    "description": "Entropia Specifica di Vapore Saturo",
+    "decimals": 5
+  },
+  {
+    "id": "v_l",
+    "name": "v_l",
+    "unit": "m^3/kg",
+    "description": "Volume Specifico di Liquido Saturo",
+    "decimals": 7
+  },
+  {
+    "id": "dv",
+    "name": "dv",
+    "unit": "m^3/kg",
+    "description": "Volume Specifico di Evaporazione",
+    "decimals": 7
+  },
+  {
+    "id": "v_v",
+    "name": "v_v",
+    "unit": "m^3/kg",
+    "description": "Volume Specifico di Vapore Saturo",
+    "decimals": 7
+  },
+  {
+    "id": "u_l",
+    "name": "u_l",
+    "unit": "kJ/kg",
+    "description": "Energia Interna Specifica di Liquido Saturo",
+    "decimals": 2
+  },
+  {
+    "id": "u_v",
+    "name": "u_v",
+    "unit": "kJ/kg",
+    "description": "Energia Interna Specifica di Vapore Saturo",
+    "decimals": 2
+  }
+]
