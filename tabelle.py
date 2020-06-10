@@ -25,6 +25,26 @@ def print_query_choices(headers):
 
     print("Please choose which quantity you want to query with: ", end='')
 
+def print_intro():
+    print("TABLES:")
+
+    for i, t in enumerate(TABLES.keys()):
+        print(f'{i + 1}) {t}', end='\t')
+    print('\n')
+
+    print("Please choose which table (index) you want to get data from: ", end='')
+
+
+def print_query_choices(headers):
+    dict_ = load_fields_from_json('table_fields.json')
+
+    print("QUANTITIES:")
+
+    for i, h in enumerate(headers):
+        print(f'{i + 1}) {dict_[h][1]}   \t {dict_[h][2]}')
+    print()
+
+    print("Please choose which quantity you want to query with: ", end='')
 
 def main():
     # fields_ids = ["P_sat_bar", "T_sat", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
