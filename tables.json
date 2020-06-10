@@ -1,32 +1,54 @@
 [
   {
-    "id" : 1,
     "name": "Tabella Saturazione Acqua (Pressioni)",
     "substance": "water",
-    "free_variables": ["P_sat_bar"],
     "filename": "Tabelle_Acqua_Fix.txt",
+    "dimensions" : 1,
     "start": 5,
     "end": 84,
     "fields": ["P_sat_bar", "T_sat", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
   },
   {
-    "id" : 2,
     "name": "Tabella Saturazione Acqua (Temperature)",
     "substance": "water",
-    "free_variables": ["P_sat"],
     "filename": "Tabelle_Acqua_Fix.txt",
-    "start": 91,
+    "dimensions" : 1,
+    "start": 90,
     "end": 170,
     "fields": ["T_sat", "P_sat_bar", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
   },
   {
-    "id" : 3,
-    "name": "Tabella Saturazione R134A (Pressione)",
+    "name": "Tabella Saturazione R134A (Pressioni)",
     "substance": "R134A",
-    "free_variables": ["P_sat_MPa"],
-    "filename": "Tabelle_Acqua_Fix.txt",
+    "filename": "Tabelle_R134a_Fix.txt",
+    "dimensions" : 1,
+    "start": 74,
+    "end": 135,
+    "fields": ["P_sat_MPa", "T_sat", "v_l", "dv", "v_v", "u_l", "u_v","h_l", "dh", "h_v", "s_l", "ds", "s_v"]
+  },
+  {
+    "name": "Tabella Saturazione R134A (Temperature)",
+    "substance": "R134A",
+    "filename": "Tabelle_R134a_Fix.txt",
+    "dimensions" : 1,
     "start": 5,
-    "end": 84,
-    "fields": ["P_sat_MPa", "T_sat", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
+    "end": 65,
+    "fields": ["T_sat","P_sat_MPa", "v_l", "dv", "v_v", "u_l", "u_v","h_l", "dh", "h_v", "s_l", "ds", "s_v"]
+  },
+  {
+    "name": "Tabella Vapore Surriscaldato Acqua",
+    "substance": "water",
+    "filename": "Tabelle_Acqua_Fix.txt",
+    "dimensions" : 2,
+    "ranges" : [{"start": 178, "end": 191}, {"start": 193, "end": 206}, {"start": 208, "end": 221}, {"start": 223, "end": 236}, {"start": 238, "end": 251}, {"start": 253, "end": 265}, {"start": 267, "end": 279}, {"start": 281, "end": 292}, {"start": 294, "end": 305}, {"start": 307, "end": 318}, {"start": 320, "end": 330}, {"start": 332, "end": 342}, {"start": 344, "end": 354}, {"start": 356, "end": 366}, {"start": 368, "end": 378}, {"start": 380, "end": 390}, {"start": 392, "end": 402}, {"start": 404, "end": 413}, {"start": 415, "end": 424}, {"start": 426, "end": 435}, {"start": 437, "end": 446}, {"start": 448, "end": 456}, {"start": 458, "end": 466}, {"start": 468, "end": 476}, {"start": 478, "end": 486}, {"start": 488, "end": 496}, {"start": 498, "end": 506}, {"start": 508, "end": 515}, {"start": 517, "end": 524}, {"start": 526, "end": 533}, {"start": 535, "end": 542}, {"start": 544, "end": 550}, {"start": 552, "end": 558}],
+    "fields": ["P_MPa", "T", "v", "h", "s"]
+  },
+  {
+    "name": "Tabella Vapore Surriscaldato R134a",
+    "substance": "R134a",
+    "filename": "Tabelle_R134a_Fix.txt",
+    "dimensions" : 2,
+    "ranges" : [{"start": 142, "end": 169}, {"start": 171, "end": 198}, {"start": 200, "end": 227}, {"start": 229, "end": 256}, {"start": 258, "end": 285}, {"start": 287, "end": 314}, {"start": 316, "end": 343}, {"start": 345, "end": 372}, {"start": 374, "end": 401}, {"start": 403, "end": 430}, {"start": 432, "end": 459}, {"start": 461, "end": 488}, {"start": 490, "end": 517}, {"start": 519, "end": 546}, {"start": 548, "end": 575}, {"start": 577, "end": 604}, {"start": 606, "end": 633}, {"start": 635, "end": 662}],
+    "fields": ["P_MPa", "T", "v", "u", "h", "s"]
   }
 ]

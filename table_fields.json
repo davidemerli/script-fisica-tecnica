@@ -98,6 +98,27 @@
     "decimals": 2
   },
   {
+    "id": "P_MPa",
+    "name": "P",
+    "unit": "MPa",
+    "description": "Pressione",
+    "decimals": 5
+  },
+  {
+    "id": "T",
+    "name": "T",
+    "unit": "°C",
+    "description": "Temperatura",
+    "decimals": 2
+  },
+  {
+    "id": "P_sat_bar",
+    "name": "P_SAT",
+    "unit": "bar",
+    "description": "Pressione di Saturazione",
+    "decimals": 2
+  },
+  {
     "id": "h",
     "name": "h",
     "unit": "kJ/kg",
@@ -116,6 +137,13 @@
     "name": "s",
     "unit": "kJ/kgK",
     "description": "Entropia Specifica",
+    "decimals": 5
+  },
+    {
+    "id": "u",
+    "name": "u",
+    "unit": "u/kg",
+    "description": "Energia Interna Specifica",
     "decimals": 5
   }
 
