@@ -1,5 +1,10 @@
 from collections import namedtuple
 import json
+import sympy as sym
+
+sym.init_printing()
+
+x = sym.symbols('x')
 
 EPS = 0.00001
 field = namedtuple("field", ["id", "name", "description", "unit", "decimals"])
@@ -30,17 +35,24 @@ def ordered_search(array, item, key):
 def calculate_quality(low_row, hi_row, value, key):
     low_value = min(key(low_row), key(hi_row))
     hi_value = max(key(low_row), key(hi_row))
+
     if not(low_value < value < hi_value):
         print("LOW:%f CURR:%f HI:%f" % (low_value,value,hi_value))
         raise ValueError("Interpolation out of range")
     qlt = (value - low_value) / (hi_value - low_value)
+
+    print(f'x = ({value} - {low_value}) / ({(hi_value)} - {(low_value)})')
+
     return qlt
 
 
 def interpolate_rows(low_row, hi_row, quality):
     mid_row = dict()
     for col in low_row.keys():
+        print(f'{col} = {low_row[col]} * (1 - {quality}) + {hi_row[col]} * {quality}', end='\n\n')
+
         mid_row[col] = low_row[col] * (1 - quality) + hi_row[col] * quality
+
     return mid_row
 
 
