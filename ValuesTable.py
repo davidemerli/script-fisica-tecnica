@@ -102,7 +102,7 @@ class ValuesTable:
         hit_2, range_2 = tables.ordered_search(values_2, value_2, key=lambda x: x[field_id_1])  # Search for key
         if hit_1 and hit_2:
             row_result = self.find_exact_2d(arg1, arg2)
-            return double_response(arg1,arg2,0,row_result,None,None,None,None)
+            return double_response(arg1, arg2, 0, row_result, None, None, None, None)
         elif hit_2 and not hit_1:
             return self.query_table_2d(arg2, arg1)
         elif hit_1 and not hit_2:
@@ -125,4 +125,3 @@ class ValuesTable:
             mid_row = tables.interpolate_rows(row0, row1, qlt)
             return double_response(arg1, arg2, 2, mid_row, neighbors[0][0], neighbors[0][1],
                                    neighbors[1][0], neighbors[1][1])
-
