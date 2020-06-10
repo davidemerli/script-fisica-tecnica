@@ -1,3 +1,4 @@
+from ValuesTable import ValuesTable
 from collections import namedtuple
 import json
 from functools import lru_cache
@@ -9,6 +10,43 @@ x = sym.symbols('x')
 
 EPS = 0.00001
 field = namedtuple("field", ["id", "name", "description", "unit", "decimals"])
+
+
+def read_1d(file_name: str, order_list: list, start=0, end=None):
+    with open(file_name, "r") as table:
+        if end is not None:
+            lines = table.readlines()[start:end]
+        else:
+            lines = table.readlines()[start:]
+        table = ValuesTable(fields_ids=order_list)
+        table.add_rows(lines)
+        return table
+
+
+def read_2d(file_name: str, order_list: list, ranges: list):
+    with open(file_name, "r") as data:
+        v_table = ValuesTable(fields_ids=order_list)
+        lines = data.readlines()
+        for r in ranges:
+            start, end = r["start"], r["end"]
+            pressure = lines[start]
+            for i in range(start + 1, end):
+                v_table.add_row("%s,%s" % (pressure.strip("\n"), lines[i]))
+        return v_table
+
+
+def load_tables(file_name: str):
+    with open(file_name, "r") as data:
+        tables_list = json.loads(data.read())
+        for table in tables_list:
+            if table["dimensions"] == 1:
+                table["object"] = read_1d(table["filename"], table["fields"], start=table["start"], end=table["end"])
+            elif table["dimensions"] == 2:
+                table["object"] = read_2d(table["filename"], table["fields"], table["ranges"])
+            else:
+                raise ValueError("Bruh, le interpolazioni trilineari non sono disponibili")
+            print("%s loaded" % table["name"])
+        return tables_list
 
 
 @lru_cache
