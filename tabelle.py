@@ -32,6 +32,7 @@ def main():
     # water_sat_p.print_response(water_sat_p.query_table_1d(("P_sat_bar", 146.0)))
     # parser = argparse.ArgumentParser(description="Read data from Fisica Tecnica per Informatici tables")
     # parser.add_argument("sost")
+    #print(TABLES[4]["object"].query_table_2d(("P_MPa",5),("T",200)))
     while True:
         print_intro()
         choice = int(input())

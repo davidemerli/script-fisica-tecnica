@@ -107,7 +107,7 @@ class ValuesTable:
         values_1 = list(sorted(set(map(lambda x: x[field_id_1], self._entries))))
         values_2 = list(sorted(set(map(lambda x: x[field_id_2], self._entries))))
         hit_1, range_1 = tables.ordered_search(values_1, value_1)  # Search for key
-        hit_2, range_2 = tables.ordered_search(values_2, value_2, key=lambda x: x[field_id_1])  # Search for key
+        hit_2, range_2 = tables.ordered_search(values_2, value_2)  # Search for key
         if hit_1 and hit_2:
             row_result = self.find_exact_2d(arg1, arg2)
             return response_2d(arg1, arg2, 0, row_result, None, None, None, None)
@@ -116,7 +116,7 @@ class ValuesTable:
         elif hit_1 and not hit_2:
             filtered_rows_2 = list(filter(lambda row: tables.float_equals(row[field_id_1], value_1), ord_rows))
             qlt = tables.calculate_quality(range_2[0], range_2[1], value_2)
-            _, rows = tables.ordered_search(filtered_rows_2, value_1, key=lambda x: x[field_id_1])  # Search for key
+            _, rows = tables.ordered_search(filtered_rows_2, value_2, key=lambda x: x[field_id_2])  # Search for key
             mid_row = tables.interpolate_rows(rows[0], rows[1], qlt)
             return response_2d(arg1, arg2, 1, mid_row, rows[0], rows[1], None, None)
         else:

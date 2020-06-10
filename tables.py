@@ -57,8 +57,8 @@ def load_fields_from_json(filename: str):
         return dict(map(lambda item: (item["id"], field(**item)), j_array))
 
 
-def ordered_search(array, item, key=lambda x: x):
-    hi_idx = None
+def ordered_search(array, item, key=lambda y: y):
+    hi_idx = 0
     for i, row in enumerate(array):
         if float_equals(key(row), item):
             return True, row
@@ -72,7 +72,7 @@ def ordered_search(array, item, key=lambda x: x):
     return False, (low_row, hi_row)
 
 
-def calculate_quality(low_row, hi_row, value, key=lambda x: x):
+def calculate_quality(low_row, hi_row, value, key=lambda y: y):
     low_value = min(key(low_row), key(hi_row))
     hi_value = max(key(low_row), key(hi_row))
     if not (low_value < value < hi_value):
