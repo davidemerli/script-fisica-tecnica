@@ -36,13 +36,13 @@ class table1D:
             print(self._fields)
             raise ValueError("Wrong number of items")
         num_row_arr = list(map(lambda x: float(x), row_arr))  # Convert to float
-        row_dict = dict(zip(self._fields, num_row_arr))
+        row_dict = dict(zip(self._fields, num_row_arr))  # Create Dictionary with id as keys
         self._entries.append(row_dict)  # Add entry
 
     def print_row(self, row):
         for field_id in self._fields:
             field = self._fields_info[field_id]
-            float_format = "%%s: %%0.%df %%s" % self._fields_info[field_id].decimals
+            float_format = "%%s: %%0.%df %%s" % self._fields_info[field_id].decimals  # Format decimal places
             print(float_format % (field.name, row[field_id], field.unit))
 
     def print_flanked_rows(self, low_row, row, hi_row):
@@ -62,11 +62,12 @@ class table1D:
             self.print_flanked_rows(q_response.low_row, q_response.row, q_response.hi_row)
 
     def query_table(self, field_id: str, value: float):
-        sorted_fields = list(sorted(self._entries, key=lambda x: x[field_id]))  # Sort
-        hit, rows = tables.ordered_search(sorted_fields, value, key=lambda x: x[field_id])
+        sorted_fields = list(sorted(self._entries, key=lambda x: x[field_id]))  # Sort fields for value
+        hit, rows = tables.ordered_search(sorted_fields, value, key=lambda x: x[field_id])  # Search for key
         if hit:
-            return response(field_id, value, True, rows, None, None, 1.00)
-        low_row, high_row = rows[0], rows[1]
+            return response(field_id, value, True, rows, None, None, 1.00)  # Exact Match
+        # No exact match, need to interpolate
+        low_row, high_row = rows[0], rows[1]  # Unpack lower / Higher bound
         qlt = tables.calculate_quality(low_row, high_row, value, key=lambda x: x[field_id])
         mid_row = tables.interpolate_rows(low_row, high_row, qlt)
         return response(field_id, value, False, mid_row, low_row, high_row, qlt)
