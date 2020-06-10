@@ -96,5 +96,27 @@
     "unit": "kJ/kg",
     "description": "Energia Interna Specifica di Vapore Saturo",
     "decimals": 2
+  },
+  {
+    "id": "h",
+    "name": "h",
+    "unit": "kJ/kg",
+    "description": "Entalpia Specifica",
+    "decimals": 2
+  },
+  {
+    "id": "v",
+    "name": "v",
+    "unit": "m^3/kg",
+    "description": "Volume Specifico",
+    "decimals": 7
+  },
+  {
+    "id": "s",
+    "name": "s",
+    "unit": "kJ/kgK",
+    "description": "Entropia Specifica",
+    "decimals": 5
   }
+
 ]

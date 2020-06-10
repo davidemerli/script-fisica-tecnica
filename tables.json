@@ -1,0 +1,32 @@
+[
+  {
+    "id" : 1,
+    "name": "Tabella Saturazione Acqua (Pressioni)",
+    "substance": "water",
+    "free_variables": ["P_sat_bar"],
+    "filename": "Tabelle_Acqua_Fix.txt",
+    "start": 5,
+    "end": 84,
+    "fields": ["P_sat_bar", "T_sat", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
+  },
+  {
+    "id" : 2,
+    "name": "Tabella Saturazione Acqua (Temperature)",
+    "substance": "water",
+    "free_variables": ["P_sat"],
+    "filename": "Tabelle_Acqua_Fix.txt",
+    "start": 91,
+    "end": 170,
+    "fields": ["T_sat", "P_sat_bar", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
+  },
+  {
+    "id" : 3,
+    "name": "Tabella Saturazione R134A (Pressione)",
+    "substance": "R134A",
+    "free_variables": ["P_sat_MPa"],
+    "filename": "Tabelle_Acqua_Fix.txt",
+    "start": 5,
+    "end": 84,
+    "fields": ["P_sat_MPa", "T_sat", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
+  }
+]
