@@ -58,7 +58,7 @@ def load_fields_from_json(filename: str):
 
 
 def ordered_search(array, item, key=lambda x: x):
-    hi_idx = None
+    hi_idx = 0
     for i, row in enumerate(array):
         if float_equals(key(row), item):
             return True, row
