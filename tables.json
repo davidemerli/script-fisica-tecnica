@@ -41,7 +41,7 @@
     "filename": "Tabelle_Acqua_Fix.txt",
     "dimensions" : 2,
     "ranges" : [{"start": 178, "end": 191}, {"start": 193, "end": 206}, {"start": 208, "end": 221}, {"start": 223, "end": 236}, {"start": 238, "end": 251}, {"start": 253, "end": 265}, {"start": 267, "end": 279}, {"start": 281, "end": 292}, {"start": 294, "end": 305}, {"start": 307, "end": 318}, {"start": 320, "end": 330}, {"start": 332, "end": 342}, {"start": 344, "end": 354}, {"start": 356, "end": 366}, {"start": 368, "end": 378}, {"start": 380, "end": 390}, {"start": 392, "end": 402}, {"start": 404, "end": 413}, {"start": 415, "end": 424}, {"start": 426, "end": 435}, {"start": 437, "end": 446}, {"start": 448, "end": 456}, {"start": 458, "end": 466}, {"start": 468, "end": 476}, {"start": 478, "end": 486}, {"start": 488, "end": 496}, {"start": 498, "end": 506}, {"start": 508, "end": 515}, {"start": 517, "end": 524}, {"start": 526, "end": 533}, {"start": 535, "end": 542}, {"start": 544, "end": 550}, {"start": 552, "end": 558}],
-    "fields": ["P_MPa", "T", "v", "h", "s"]
+    "fields": ["P_bar", "T", "v", "h", "s"]
   },
   {
     "name": "Tabella Vapore Surriscaldato R134a",

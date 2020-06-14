@@ -9,7 +9,7 @@ sym.init_printing()
 x = sym.symbols('x')
 
 EPS = 0.00001
-field = namedtuple("field", ["id", "name", "description", "unit", "decimals"])
+field = namedtuple("field", ["id", "name", "description", "group", "unit", "decimals"])
 
 
 def read_1d(file_name: str, order_list: list, start=0, end=None):
@@ -57,7 +57,7 @@ def load_fields_from_json(filename: str):
         return dict(map(lambda item: (item["id"], field(**item)), j_array))
 
 
-def ordered_search(array, item, key=lambda x: x):
+def ordered_search(array, item, key=lambda y: y):
     hi_idx = 0
     for i, row in enumerate(array):
         if float_equals(key(row), item):
