@@ -46,7 +46,7 @@ def main():
 
         headers = table[2]
         print_query_choices(table[2])
-
+        
         table = read_from(table[0], headers, start=table[1][0], end=table[1][1])
 
         choice = headers[int(input()) - 1]
