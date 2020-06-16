@@ -1,8 +1,7 @@
-[
-  {
+[{
     "id": "T_sat",
     "name": "T_SAT",
-    "unit": "°C",
+    "unit": "\u00b0C",
     "group": null,
     "description": "Temperatura di Saturazione",
     "decimals": 2
@@ -27,7 +26,10 @@
     "id": "h_l",
     "name": "h_l",
     "unit": "kJ/kg",
-    "group": {"group_id": "h", "type": "l"},
+    "group": {
+      "group_id": "h",
+      "type": "l"
+    },
     "description": "Entalpia Specifica di Liquido Saturo",
     "decimals": 2
   },
@@ -35,7 +37,10 @@
     "id": "dh",
     "name": "dh",
     "unit": "kJ/Kg",
-    "group": {"group_id": "h", "type": "d"},
+    "group": {
+      "group_id": "h",
+      "type": "d"
+    },
     "description": "Entalpia Specifica di Evaporazione",
     "decimals": 2
   },
@@ -43,7 +48,10 @@
     "id": "h_v",
     "name": "h_v",
     "unit": "kJ/Kg",
-    "group": {"group_id": "h", "type": "v"},
+    "group": {
+      "group_id": "h",
+      "type": "v"
+    },
     "description": "Entalpia Specifica di Vapore Saturo",
     "decimals": 2
   },
@@ -51,7 +59,10 @@
     "id": "s_l",
     "name": "s_l",
     "unit": "kJ/kgK",
-    "group": {"group_id": "s", "type": "l"},
+    "group": {
+      "group_id": "s",
+      "type": "l"
+    },
     "description": "Entropia Specifica di Liquido Saturo",
     "decimals": 5
   },
@@ -59,7 +70,10 @@
     "id": "ds",
     "name": "ds",
     "unit": "kJ/KgK",
-    "group": {"group_id": "s", "type": "d"},
+    "group": {
+      "group_id": "s",
+      "type": "d"
+    },
     "description": "Entropia Specifica di Evaporazione",
     "decimals": 5
   },
@@ -67,7 +81,10 @@
     "id": "s_v",
     "name": "s_v",
     "unit": "kJ/KgK",
-    "group": {"group_id": "s", "type": "v"},
+    "group": {
+      "group_id": "s",
+      "type": "v"
+    },
     "description": "Entropia Specifica di Vapore Saturo",
     "decimals": 5
   },
@@ -75,7 +92,10 @@
     "id": "v_l",
     "name": "v_l",
     "unit": "m^3/kg",
-    "group": {"group_id": "v", "type": "l"},
+    "group": {
+      "group_id": "v",
+      "type": "l"
+    },
     "description": "Volume Specifico di Liquido Saturo",
     "decimals": 7
   },
@@ -83,7 +103,10 @@
     "id": "dv",
     "name": "dv",
     "unit": "m^3/kg",
-    "group": {"group_id": "v", "type": "d"},
+    "group": {
+      "group_id": "v",
+      "type": "d"
+    },
     "description": "Volume Specifico di Evaporazione",
     "decimals": 7
   },
@@ -91,7 +114,10 @@
     "id": "v_v",
     "name": "v_v",
     "unit": "m^3/kg",
-    "group": {"group_id": "v", "type": "v"},
+    "group": {
+      "group_id": "v",
+      "type": "v"
+    },
     "description": "Volume Specifico di Vapore Saturo",
     "decimals": 7
   },
@@ -99,7 +125,10 @@
     "id": "u_l",
     "name": "u_l",
     "unit": "kJ/kg",
-    "group": {"group_id": "v", "type": "l"},
+    "group": {
+      "group_id": "v",
+      "type": "l"
+    },
     "description": "Energia Interna Specifica di Liquido Saturo",
     "decimals": 2
   },
@@ -107,7 +136,10 @@
     "id": "u_v",
     "name": "u_v",
     "unit": "kJ/kg",
-    "group": {"group_id": "v", "type": "v"},
+    "group": {
+      "group_id": "v",
+      "type": "v"
+    },
     "description": "Energia Interna Specifica di Vapore Saturo",
     "decimals": 2
   },
@@ -130,7 +162,7 @@
   {
     "id": "T",
     "name": "T",
-    "unit": "°C",
+    "unit": "\u00b0C",
     "group": null,
     "description": "Temperatura",
     "decimals": 2
@@ -175,5 +207,4 @@
     "description": "Energia Interna Specifica",
     "decimals": 5
   }
-
 ]

@@ -41,7 +41,7 @@ def load_tables(file_name: str):
             else:
                 raise ValueError("Bruh, le interpolazioni trilineari non sono disponibili")
             print("%s loaded" % table["name"])
-        return tables_list
+        return {table["name"]: table for table in tables_list}
 
 
 @lru_cache
