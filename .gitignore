@@ -96,6 +96,7 @@ ipython_config.py
 Pipfile.lock
 Pipfile
 .project
+requirements.txt
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
