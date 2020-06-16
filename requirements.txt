@@ -1,0 +1,4 @@
+APScheduler==3.6.3
+pytz==2020.1
+six==1.15.0
+tzlocal==2.1

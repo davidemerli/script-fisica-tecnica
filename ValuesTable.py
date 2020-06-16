@@ -1,6 +1,5 @@
 import tables
 from collections import namedtuple, defaultdict
-from tabulate import tabulate
 
 response_1d = namedtuple("response_1d", ["field_req", "value_req", "exact", "row", "low_row", "hi_row", "mix_factor"])
 
@@ -68,18 +67,18 @@ class ValuesTable:
     def print_response(self, q_response):
         print("Requested %s=%f from %s" % (q_response.field_req, q_response.value_req, self._name))
 
-        if q_response.exact:
-            print("Exact Match Found!")
-            # self.print_row(q_response.row)
-            print(
-                tabulate([f'\x1b[31m{v}\x1b[0m' for v in q_response.row.values()], headers=list(q_response.row.keys()),
-                         tablefmt='fancy_grid'))
-        else:
-            print("Interpolated result with quality=%f" % q_response.mix_factor)
-            # self.print_flanked_rows(q_response.low_row, q_response.row, q_response.hi_row)
-            print(tabulate([q_response.low_row.values(), [f'\x1b[31m{v}\x1b[0m' for v in q_response.row.values()],
-                            q_response.hi_row.values()],
-                           headers=list(q_response.low_row.keys()), tablefmt='fancy_grid'))
+        # if q_response.exact:
+        #     print("Exact Match Found!")
+        #     # self.print_row(q_response.row)
+        #     print(
+        #         tabulate([f'\x1b[31m{v}\x1b[0m' for v in q_response.row.values()], headers=list(q_response.row.keys()),
+        #                  tablefmt='fancy_grid'))
+        # else:
+        #     print("Interpolated result with quality=%f" % q_response.mix_factor)
+        #     # self.print_flanked_rows(q_response.low_row, q_response.row, q_response.hi_row)
+        #     print(tabulate([q_response.low_row.values(), [f'\x1b[31m{v}\x1b[0m' for v in q_response.row.values()],
+        #                     q_response.hi_row.values()],
+        #                    headers=list(q_response.low_row.keys()), tablefmt='fancy_grid'))
 
     def query_table_1d(self, arg1: tuple):
         field_id_1, value_1 = arg1

@@ -246,8 +246,9 @@ def init_2d_buttons(root, selected):
 
 
 def main():
-    root = Tk()
+    root = Tk('Fisica Tecninator 4200')
     root.geometry('1000x600')
+    root.iconbitmap('icon.ico')
 
     selectedTable = StringVar()
 
@@ -276,7 +277,7 @@ def main():
 
     sched.start()
     root.mainloop()
-    
+
     # # fields_ids = ["P_sat_bar", "T_sat", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
     # # water_sat_p = read_form("Tabelle_Acqua_Fix.txt", fields_ids, start=5, end=84)
     # # water_sat_p.print_response(water_sat_p.query_table_1d(("P_sat_bar", 146.0)))
