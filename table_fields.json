@@ -206,5 +206,13 @@
     "group": null,
     "description": "Energia Interna Specifica",
     "decimals": 5
+  },
+  {
+    "id": "x",
+    "name": "x",
+    "unit": "-",
+    "group": null,
+    "description": "Titolo di Vapore",
+    "decimals": 5
   }
 ]

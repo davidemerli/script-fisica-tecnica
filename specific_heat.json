@@ -1,0 +1,20 @@
+[
+  {
+    "id": "mono",
+    "name": "Monoatomico",
+    "cv": 1.5,
+    "cp": 2.5
+  },
+  {
+    "id": "bi",
+    "name": "Bilineare o Poliatomico Lineare",
+    "cv": 2.5,
+    "cp": 3.5
+  },
+  {
+    "id": "poli",
+    "name": "Bilineare o Poliatomico non lineare",
+    "cv": 3.0,
+    "cp": 4.0
+  }
+]

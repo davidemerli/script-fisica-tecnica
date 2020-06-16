@@ -4,7 +4,7 @@ from tabulate import tabulate
 
 response_1d = namedtuple("response_1d", ["field_req", "value_req", "exact", "row", "low_row", "hi_row", "mix_factor"])
 
-response_1d_qlt = namedtuple("response_1d_qlt", ["field_req", "value_req", "row", "groups", "quality"])
+response_1d_qlt = namedtuple("response_1d_qlt", ["field_req", "value_req", "row", "groups"])
 
 response_2d = namedtuple("response_2d", ["arg1", "arg2", "grade", "row", "row_00", "row_01", "row_10", "row_11"])
 
@@ -52,6 +52,13 @@ class ValuesTable:
         row_dict = dict(zip(self._fields, num_row_arr))  # Create Dictionary with id as keys
         self._entries.append(row_dict)  # Add entry
 
+    def normalize_row(self, row):
+        #print(row)
+        #for key, val in row.items():
+            #row[key] = round(val, self._fields_info[key]["decimals"] + 2)
+        #print(row)
+        return row
+
     def print_row(self, row):
         for field_id in self._fields:
             field = self._fields_info[field_id]
@@ -88,10 +95,10 @@ class ValuesTable:
         if hit:
             return response_1d(field_id_1, value_1, True, rows, None, None, 1.00)  # Exact Match
         # No exact match, need to interpolate
-        low_row, high_row = rows[0], rows[1]  # Unpack lower / Higher bound
+        low_row, high_row = self.normalize_row(rows[0]), self.normalize_row(rows[1])  # Unpack lower / Higher bound
         qlt = tables.calculate_quality(low_row, high_row, value_1, key=lambda x: x[field_id_1])
-        mid_row = tables.interpolate_rows(low_row, high_row, qlt)
-        return response_1d(field_id_1, value_1, False, mid_row, low_row, high_row, qlt)
+        mid_row = self.normalize_row(tables.interpolate_rows(low_row, high_row, qlt))
+        return response_1d(field_id_1, value_1, False, mid_row, low_row, high_row, round(qlt, 6))
 
     def query_table_1d_qlt(self, row, arg1):
         group_id, value_1 = arg1
@@ -109,7 +116,9 @@ class ValuesTable:
             l_value = row[group_v["l"].id]
             v_value = row[group_v["v"].id]
             resp_group[group_key] = (1 - x) * l_value + x * v_value
-        return response_1d_qlt(group_id, value_1, row, resp_group, x)
+            resp_group["x"] = x
+            resp_group = self.normalize_row(resp_group)
+        return response_1d_qlt(group_id, value_1, row, resp_group)
 
     def find_exact_2d(self, arg1, arg2):
         field_id_1, value_1 = arg1
@@ -150,6 +159,7 @@ class ValuesTable:
                 neighbors.append([])
                 for j in range(2):
                     neighbors[i].append(self.find_exact_2d((field_id_1, range_1[i]), (field_id_2, range_2[j])))
+            print(neighbors)
             # Interpolate the left and the right rows in the table
             qlt10 = tables.calculate_quality(neighbors[0][0], neighbors[1][0], value_1, lambda x: x[field_id_1])
             row0 = tables.interpolate_rows(neighbors[0][0], neighbors[1][0], qlt10)

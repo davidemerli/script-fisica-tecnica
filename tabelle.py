@@ -67,16 +67,16 @@ def table_from_2d(root, result):
 
     table_entries.append([result.row[col] for col in table_entries[0]] + ['red'])
 
-    if result.row_00 != None:
-        table_entries.append([result.row[col] for col in table_entries[0]] + ['blue'])
+    if result.row_00 is not None:
+        table_entries.append([result.row_00[col] for col in table_entries[0]] + ['blue'])
 
-    if result.row_01 != None:
+    if result.row_01 is not None:
         table_entries.append([result.row_01[col] for col in table_entries[0]] + ['blue'])
 
-    if result.row_10 != None:
+    if result.row_10 is not None:
         table_entries.append([result.row_10[col] for col in table_entries[0]] + ['blue'])
 
-    if result.row_11 != None:
+    if result.row_11 is not None:
         table_entries.append([result.row_11[col] for col in table_entries[0]] + ['blue'])
 
     table = Table(root, table_entries)
