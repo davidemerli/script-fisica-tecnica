@@ -31,15 +31,15 @@ def main():
     # water_sat_p.print_response(water_sat_p.query_table_1d(("P_sat_bar", 146.0)))
     # parser = argparse.ArgumentParser(description="Read data from Fisica Tecnica per Informatici tables")
     # parser.add_argument("sost")
-    #print(TABLES[0]["object"]._groups)
+    print(TABLES)
     # ESEMPIO Query di vapore saturo (Necessita di due parametri indipedenti)
-    print(TABLES[4]["object"].query_table_2d(("T", 320), ("P_bar", 5.5)))
+    print(TABLES["Tabella Vapore Surriscaldato Acqua"]["object"].query_table_2d(("T", 320), ("P_bar", 5.5)))
     # ESEMPIO Query con quality
     # 1 - Fai una normale query nella tabella di saturazione
-    resp1 = TABLES[0]["object"].query_table_1d(("P_sat_bar", 0.95))
+    resp1 = TABLES["Tabella Saturazione Acqua (Pressioni)"]["object"].query_table_1d(("P_sat_bar", 0.95))
     print(resp1)
     # 2 - Usando quella riga fai una query fornendo una grandezza tra "h", "l", "s", "u", "x"
-    print(TABLES[0]["object"].query_table_1d_qlt(resp1.row, ("x", 0.5)))
+    print(TABLES["Tabella Saturazione Acqua (Pressioni)"]["object"].query_table_1d_qlt(resp1.row, ("x", 0.5)))
 
     while True:
         print_intro()
