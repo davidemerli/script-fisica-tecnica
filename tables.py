@@ -8,7 +8,7 @@ field = namedtuple("field", ["id", "name", "description", "group", "unit", "deci
 
 
 def read_1d(file_name: str, order_list: list, start=0, end=None):
-    with open(file_name, "r") as table:
+    with open(f'tables/{file_name}', "r") as table:
         if end is not None:
             lines = table.readlines()[start:end]
         else:
@@ -19,7 +19,7 @@ def read_1d(file_name: str, order_list: list, start=0, end=None):
 
 
 def read_2d(file_name: str, order_list: list, ranges: list):
-    with open(file_name, "r") as data:
+    with open(f'tables/{file_name}', "r") as data:
         v_table = ValuesTable(fields_ids=order_list)
         lines = data.readlines()
         for r in ranges:

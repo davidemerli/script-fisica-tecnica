@@ -131,6 +131,7 @@ def init_1d_buttons(root, selected):
         except Exception as ex:
             exception = Label(frame, text=ex.with_traceback(None), fg='red')
             exception.pack(side=BOTTOM)
+            QUERY_TABLES.append(exception)
 
         try:
             if result != None:
@@ -142,6 +143,7 @@ def init_1d_buttons(root, selected):
         except Exception as ex:
             exception = Label(frame, text=ex.with_traceback(None), fg='red')
             exception.pack(side=BOTTOM)
+            QUERY_TABLES.append(exception)
 
         frame.place(relx=0.5, y=350, anchor=CENTER)
         BUTTONS.append(frame)
@@ -222,6 +224,7 @@ def init_2d_buttons(root, selected):
         except Exception as ex:
             exception = Label(frame, text=ex.with_traceback(None), fg='red')
             exception.pack(side=BOTTOM)
+            QUERY_TABLES.append(exception)
 
         frame.place(relx=0.5, y=300, anchor=CENTER)
         BUTTONS.append(frame)
@@ -249,7 +252,7 @@ def init_2d_buttons(root, selected):
     txt1 = Entry(root, width=15, textvariable=value1, fg='#F7DEE0', bg='#D1495B', font=('Consolas', 12, 'bold'))
     txt1.place(x=20, y=40)
 
-    cbox1 = ttk.Combobox(root, values=fields, width=10, textvariable=var1,
+    cbox1 = ttk.Combobox(root, values=fields[:2], width=10, textvariable=var1,
                          state='readonly', font=('Consolas', 12, 'bold'))
     cbox1.bind("<<ComboboxSelected>>", update_unit)
     cbox1.place(x=200, y=40)
@@ -288,17 +291,6 @@ def main():
     root.geometry('1200x600')
     root.configure(background='#2D3142')
 
-    with open('version.json', 'r') as version_file:
-        version = json.load(version_file)['version']
-        root.title(f'Fisica Tecninator 4200 v {version}')
-
-        online_version = json.load(urlopen(VERSION_LINK))['version']
-
-        if version < online_version:
-            label = Label(root, text=f'This (v{version}) is not the newest version({online_version})!')
-            label.configure(fontsize='20', fg='red')
-            label.pack(side=RIGHT)
-
     selectedTable = StringVar()
 
     def load_buttons(eventObject=None):
@@ -315,6 +307,17 @@ def main():
     combo.set(options[0])
     combo.pack(padx=5, pady=5)
     load_buttons()
+
+    with open('version.json', 'r') as version_file:
+        version = json.load(version_file)['version']
+        root.title(f'Fisica Tecninator 4200 v {version}')
+
+        online_version = json.load(urlopen(VERSION_LINK))['version']
+
+        if version < online_version:
+            label = Label(root, text=f'This(v{version}) is not the newest version({online_version})!')
+            label.configure(font=Font(family="Consolas", size=30), fg='red')
+            label.pack(anchor=CENTER, pady=200)
 
     def on_closing():
         exit(0)
