@@ -63,6 +63,7 @@ def table_from_1d(root, result):
 
 
 def table_from_2d(root, result):
+    print(result)
     table_entries = [list(result.row), [get_field(id).unit for id in list(result.row)]]
 
     table_entries.append([result.row[col] for col in table_entries[0]] + ['red'])
