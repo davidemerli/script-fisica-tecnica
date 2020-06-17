@@ -153,31 +153,21 @@ class ValuesTable:
                 qlt = tables.calculate_quality(range_2[0], range_2[1], value_2, key=lambda x: x[field_id_2])
                 _, rows = tables.ordered_search(filtered_rows_2, value_2, key=lambda x: x[field_id_2])  # Search for key
                 mid_row = tables.interpolate_rows(rows[0], rows[1], qlt)
-                self.normalize_row(mid_row)
+                mid_row = self.normalize_row(mid_row)
                 return response_2d(arg1, arg2, 1, mid_row, rows[0], rows[1], None, None)
         else:
-            if not reversed:
-                reversed_query = self.query_table_2d(arg2, arg1, True)
-                if reversed_query.grade == 1:
-                    return reversed_query
-            neighbors = list()
-            filtered_values_2 = filter(lambda row: tables.float_equals(row[field_id_1], range_1[0])
-                                    or tables.float_equals(row[field_id_1], range_1[1]), ord_rows)
-            values_2 = list(sorted(set(map(lambda x: x[field_id_2], filtered_values_2))))
-            hit_2, range_2 = tables.ordered_search(values_2, value_2)
-            for i in range(2):
-                neighbors.append([])
-                for j in range(2):
-                    neighbors[i].append(self.find_exact_2d((field_id_1, range_1[i]), (field_id_2, range_2[j])))
-            # print(neighbors)
-            # Interpolate the left and the right rows in the table
-            qlt10 = tables.calculate_quality(neighbors[0][0], neighbors[1][0], value_1, lambda x: x[field_id_1])
-            row0 = tables.interpolate_rows(neighbors[0][0], neighbors[1][0], qlt10)
-            qlt11 = tables.calculate_quality(neighbors[0][1], neighbors[1][1], value_1, lambda x: x[field_id_1])
-            row1 = tables.interpolate_rows(neighbors[0][1], neighbors[1][1], qlt11)
-            # Final interpolation
-            qlt = tables.calculate_quality(row0, row1, value_2, lambda x: x[field_id_2])
-            mid_row = tables.interpolate_rows(row0, row1, qlt)
-            self.normalize_row(mid_row)
-            return response_2d(arg1, arg2, 2, mid_row, neighbors[0][0], neighbors[0][1],
-                               neighbors[1][0], neighbors[1][1])
+            qlt = tables.calculate_quality(range_1[0], range_1[1], value_1)
+            filt_vals_low = list(filter(lambda row: tables.float_equals(row[field_id_1], range_1[0]), ord_rows))
+            filt_vals_hi = list(filter(lambda row: tables.float_equals(row[field_id_1], range_1[1]), ord_rows))
+            filt_vals_mid = list(map(lambda c: tables.interpolate_rows(c[0], c[1], qlt), zip(filt_vals_low, filt_vals_hi)))
+            hit_2, range_2 = tables.ordered_search(filt_vals_mid, value_2, key=lambda x: x[field_id_2])
+            if hit_2:
+                range_2 = self.normalize_row(range_2)
+                return response_2d(arg1, arg2, 1, range_2, None, None, None, None)  # TODO find two rows
+            else:
+                qlt = tables.calculate_quality(range_2[0], range_2[1], value_2, lambda x: x[field_id_2])
+                mid_row = tables.interpolate_rows(range_2[0], range_2[1], qlt)
+                low_row = self.normalize_row(range_2[0])
+                hi_row = self.normalize_row(range_2[1])
+                mid_row = self.normalize_row(mid_row)
+                return response_2d(arg1, arg2, 2, mid_row, low_row, hi_row, None, None)
