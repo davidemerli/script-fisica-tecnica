@@ -124,12 +124,14 @@ def init_1d_buttons(root, selected):
             table = table_from_quality(frame, result_qlt)
             table.pack(side=TOP, fill=X, pady=10)
         except Exception as ex:
+            print(ex.with_traceback())
             pass
 
         frame.place(x=10, y=200)
 
     fields = TABLES[selected]['fields']
     groups = list(TABLES[selected]['object']._groups.keys())
+    groups.append("x")
 
     var1 = StringVar(value=fields[0])
     var2 = StringVar(value=groups[0])
@@ -246,9 +248,10 @@ def init_2d_buttons(root, selected):
 
 
 def main():
-    root = Tk('Fisica Tecninator 4200')
+    root = Tk()
+    root.title('Fisica Tecninator 4200 (versione per informatici)')
     root.geometry('1000x600')
-    root.iconbitmap('icon.ico')
+    # root.iconbitmap('icon.ico')
 
     selectedTable = StringVar()
 

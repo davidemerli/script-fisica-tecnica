@@ -53,8 +53,10 @@ class ValuesTable:
 
     def normalize_row(self, row):
         #print(row)
-        #for key, val in row.items():
-            #row[key] = round(val, self._fields_info[key]["decimals"] + 2)
+        data = tables.load_fields_from_json()
+        for key, val in row.items():
+            if key in data:
+                row[key] = round(val, data[key].decimals + 1)
         #print(row)
         return row
 
@@ -115,8 +117,8 @@ class ValuesTable:
             l_value = row[group_v["l"].id]
             v_value = row[group_v["v"].id]
             resp_group[group_key] = (1 - x) * l_value + x * v_value
-            resp_group["x"] = x
-            resp_group = self.normalize_row(resp_group)
+        resp_group["x"] = x
+        resp_group = self.normalize_row(resp_group)
         return response_1d_qlt(group_id, value_1, row, resp_group)
 
     def find_exact_2d(self, arg1, arg2):
@@ -151,6 +153,7 @@ class ValuesTable:
             qlt = tables.calculate_quality(range_2[0], range_2[1], value_2)
             _, rows = tables.ordered_search(filtered_rows_2, value_2, key=lambda x: x[field_id_2])  # Search for key
             mid_row = tables.interpolate_rows(rows[0], rows[1], qlt)
+            self.normalize_row(mid_row)
             return response_2d(arg1, arg2, 1, mid_row, rows[0], rows[1], None, None)
         else:  # Bi-linear interpolation
             neighbors = list()
@@ -158,7 +161,7 @@ class ValuesTable:
                 neighbors.append([])
                 for j in range(2):
                     neighbors[i].append(self.find_exact_2d((field_id_1, range_1[i]), (field_id_2, range_2[j])))
-            print(neighbors)
+            # print(neighbors)
             # Interpolate the left and the right rows in the table
             qlt10 = tables.calculate_quality(neighbors[0][0], neighbors[1][0], value_1, lambda x: x[field_id_1])
             row0 = tables.interpolate_rows(neighbors[0][0], neighbors[1][0], qlt10)
@@ -167,5 +170,6 @@ class ValuesTable:
             # Final interpolation
             qlt = tables.calculate_quality(row0, row1, value_2, lambda x: x[field_id_2])
             mid_row = tables.interpolate_rows(row0, row1, qlt)
+            self.normalize_row(mid_row)
             return response_2d(arg1, arg2, 2, mid_row, neighbors[0][0], neighbors[0][1],
                                neighbors[1][0], neighbors[1][1])

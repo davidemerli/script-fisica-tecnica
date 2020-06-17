@@ -45,7 +45,7 @@ def load_tables(file_name: str):
 
 
 @lru_cache
-def load_fields_from_json(filename: str):
+def load_fields_from_json(filename: str = "table_fields.json"):
     with open(filename, "r") as j_file:
         j_string = j_file.read()
         j_array = json.loads(j_string)
@@ -84,8 +84,13 @@ def interpolate_rows(low_row, hi_row, quality):
     mid_row = dict()
     for col in low_row.keys():
         print(f'{col} = {low_row[col]} * (1 - {quality}) + {hi_row[col]} * {quality}', end='\n\n')
-
-        mid_row[col] = low_row[col] * (1 - quality) + hi_row[col] * quality
+        fields = load_fields_from_json()
+        interpol = low_row[col] * (1 - quality) + hi_row[col] * quality
+        # if col in fields:
+        #    decs = fields[col].decimals
+        # else:
+        #    decs = 9
+        mid_row[col] = interpol
 
     return mid_row
 
