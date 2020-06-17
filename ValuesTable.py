@@ -52,12 +52,12 @@ class ValuesTable:
         self._entries.append(row_dict)  # Add entry
 
     def normalize_row(self, row):
-        #print(row)
+        # print(row)
         data = tables.load_fields_from_json()
         for key, val in row.items():
             if key in data:
                 row[key] = round(val, data[key].decimals + 1)
-        #print(row)
+        # print(row)
         return row
 
     def print_row(self, row):
@@ -133,30 +133,38 @@ class ValuesTable:
         else:
             return row_result[0]
 
-    def query_table_2d(self, arg1: tuple, arg2: tuple):
+    def query_table_2d(self, arg1: tuple, arg2: tuple, reversed=False):
         field_id_1, value_1 = arg1
         field_id_2, value_2 = arg2
         if field_id_1 == field_id_2:  # The two fields should be differnt
             raise ValueError("Dependant field error")
         ord_rows = list(sorted(self._entries, key=lambda row: (row[field_id_1], row[field_id_2])))
         values_1 = list(sorted(set(map(lambda x: x[field_id_1], self._entries))))
-        values_2 = list(sorted(set(map(lambda x: x[field_id_2], self._entries))))
         hit_1, range_1 = tables.ordered_search(values_1, value_1)  # Search for key
-        hit_2, range_2 = tables.ordered_search(values_2, value_2)  # Search for key
-        if hit_1 and hit_2:  # Exact Match, no interpolation needed
-            row_result = self.find_exact_2d(arg1, arg2)
-            return response_2d(arg1, arg2, 0, row_result, None, None, None, None)
-        elif hit_2 and not hit_1:  # Linear interpolation
-            return self.query_table_2d(arg2, arg1)  # Redo search inverting parameteres
-        elif hit_1 and not hit_2:  # Linear interpolation
+        if hit_1:
             filtered_rows_2 = list(filter(lambda row: tables.float_equals(row[field_id_1], value_1), ord_rows))
-            qlt = tables.calculate_quality(range_2[0], range_2[1], value_2)
-            _, rows = tables.ordered_search(filtered_rows_2, value_2, key=lambda x: x[field_id_2])  # Search for key
-            mid_row = tables.interpolate_rows(rows[0], rows[1], qlt)
-            self.normalize_row(mid_row)
-            return response_2d(arg1, arg2, 1, mid_row, rows[0], rows[1], None, None)
-        else:  # Bi-linear interpolation
+            hit_2, range_2 = tables.ordered_search(filtered_rows_2, value_2,
+                                                   key=lambda x: x[field_id_2])  # Search for key
+            print(range_2)
+            if hit_2:
+                row_result = self.find_exact_2d(arg1, arg2)
+                return response_2d(arg1, arg2, 0, row_result, None, None, None, None)
+            else:
+                qlt = tables.calculate_quality(range_2[0], range_2[1], value_2, key=lambda x: x[field_id_2])
+                _, rows = tables.ordered_search(filtered_rows_2, value_2, key=lambda x: x[field_id_2])  # Search for key
+                mid_row = tables.interpolate_rows(rows[0], rows[1], qlt)
+                self.normalize_row(mid_row)
+                return response_2d(arg1, arg2, 1, mid_row, rows[0], rows[1], None, None)
+        else:
+            if not reversed:
+                reversed_query = self.query_table_2d(arg2, arg1, True)
+                if reversed_query.grade == 1:
+                    return reversed_query
             neighbors = list()
+            filtered_values_2 = filter(lambda row: tables.float_equals(row[field_id_1], range_1[0])
+                                    or tables.float_equals(row[field_id_1], range_1[1]), ord_rows)
+            values_2 = list(sorted(set(map(lambda x: x[field_id_2], filtered_values_2))))
+            hit_2, range_2 = tables.ordered_search(values_2, value_2)
             for i in range(2):
                 neighbors.append([])
                 for j in range(2):
