@@ -2,21 +2,20 @@ import tables
 from tkinter import *
 from tkinter import ttk
 from math import sin
-from time import time_ns
-from apscheduler.schedulers.background import BackgroundScheduler
+from time import time_ns, sleep
 from tkinter.font import Font
+from threading import Thread
 
 TABLES = tables.load_tables("tables.json")
 QUERY_TABLES = []
 BUTTONS = []
-
-sched = BackgroundScheduler()
 
 
 class Table:
 
     def __init__(self, root, entries):
         self.frame = Frame(root)
+        self.frame.configure(bg='#325985')
 
         rows, cols = len(entries), len(entries[0])
 
@@ -24,11 +23,12 @@ class Table:
             return 'blue' if r in [0, 1] else entries[i][-1]
 
         def style(r):
-            return 'bold' if r == 0 else 'italic'
+            return 'bold' if r == 0 or entries[i][-1] == 'red' else 'italic'
 
         for i in range(rows):
             for j in range(cols):
-                self.e = Entry(self.frame, width=12, fg=color(i), font=('Segoe UI', 10, style(i)))
+                self.e = Entry(self.frame, width=10, fg=color(i), font=('Consolas', 11, style(i)))
+                self.e.configure(background='#A7BFDD')
                 self.e.grid(row=i, column=j)
                 self.e.insert(END, entries[i][j])
 
@@ -113,21 +113,23 @@ def init_1d_buttons(root, selected):
         clear_queries()
 
         frame = Frame(root)
+        frame.configure(bg='#325985')
 
         result = TABLES[selected]['object'].query_table_1d((var1.get(), float(value1.get())))
         table = table_from_1d(frame, result)
-        table.pack(side=TOP, fill=X, pady=10)
+        table.pack(anchor=CENTER, padx=10, pady=10)
 
         try:
             result_qlt = TABLES[selected]["object"].query_table_1d_qlt(result.row, (var2.get(), float(value2.get())))
 
             table = table_from_quality(frame, result_qlt)
-            table.pack(side=TOP, fill=X, pady=10)
+            table.pack(anchor=CENTER, padx=10, pady=10)
         except Exception as ex:
-            print(ex.with_traceback())
+            print(ex.with_traceback(None))
             pass
 
-        frame.place(x=10, y=200)
+        frame.place(relx=0.5, y=350, anchor=CENTER)
+        BUTTONS.append(frame)
 
     fields = TABLES[selected]['fields']
     groups = list(TABLES[selected]['object']._groups.keys())
@@ -142,45 +144,46 @@ def init_1d_buttons(root, selected):
         unit1.set(get_field(var1.get()).unit)
         unit2.set(get_field(var2.get()).unit)
 
-    unit_label1 = Label(root, textvariable=unit1)
-    unit_label1.place(x=240, y=40)
+    unit_label1 = Label(root, textvariable=unit1, fg='#A7BFDD', bg='#2D3142', font=('Consolas', 12, 'bold'))
+    unit_label1.place(x=350, y=40)
 
-    unit_label2 = Label(root, textvariable=unit2)
-    unit_label2.place(x=240, y=80)
+    unit_label2 = Label(root, textvariable=unit2, fg='#A7BFDD', bg='#2D3142', font=('Consolas', 12, 'bold'))
+    unit_label2.place(x=350, y=90)
 
     value1, value2 = StringVar(), StringVar()
 
-    txt1 = Entry(root, width=15, textvariable=value1)
+    txt1 = Entry(root, width=15, textvariable=value1, fg='#F7DEE0', bg='#D1495B', font=('Consolas', 12, 'bold'))
     txt1.place(x=20, y=40)
 
-    cbox1 = ttk.Combobox(root, values=fields, width=10, textvariable=var1)
+    cbox1 = ttk.Combobox(root, values=fields, width=10, textvariable=var1,
+                         state='readonly', font=('Consolas', 12, 'bold'))
     cbox1.bind("<<ComboboxSelected>>", update_unit)
-    cbox1.place(x=150, y=40)
+    cbox1.place(x=200, y=40)
 
-    txt2 = Entry(root, width=15, textvariable=value2)
-    txt2.place(x=20, y=90)
+    txt2 = Entry(root, width=15, textvariable=value2, fg='#F7DEE0', bg='#D1495B', font=('Consolas', 12, 'bold'))
+    txt2.place(x=20, y=100)
 
-    cbox2 = ttk.Combobox(root, values=groups, width=10, textvariable=var2)
-    cbox2.place(x=150, y=90)
+    cbox2 = ttk.Combobox(root, values=groups, width=10, textvariable=var2,
+                         state='readonly', font=('Consolas', 12, 'bold'))
+    cbox2.place(x=200, y=100)
     cbox2.bind("<<ComboboxSelected>>", update_unit)
 
-    label1 = Label(root, text='Value from table')
-    label2 = Label(root, text='Intermediate value (optional)')
+    label1 = Label(root, text='Value from table', fg='white', bg='#2D3142', font=('Consolas', 12, 'bold'))
+    label2 = Label(root, text='Intermediate value (optional)', fg='white', bg='#2D3142', font=('Consolas', 12, 'bold'))
 
     label1.place(x=20, y=15)
-    label2.place(x=20, y=65)
+    label2.place(x=20, y=75)
 
-    button = Button(text='Qwuwery OwO', command=query, fg='black', width=15,
-                    height=1, font=Font(family='Comic Sans MS', weight='bold', size=20))
-    button.place(x=20, y=120)
+    button = Button(text='Query!', command=query, fg='black', width=15,
+                    height=1, font=Font(family='Consolas', weight='bold', size=20))
+    button.place(x=20, y=140)
 
     def color_changer():
-        try:
+        while True:
+            sleep(0.01)
             button.configure(bg=makeColorGradient(time_ns() / 10e8 * 2, center=180, width=75))
-        except Exception:
-            pass
 
-    sched.add_job(color_changer, 'interval', seconds=0.05)
+    Thread(target=color_changer).start()
 
     BUTTONS.extend([unit_label1, unit_label2, txt1, txt2, cbox1, cbox2, button, label1, label2])
 
@@ -193,13 +196,15 @@ def init_2d_buttons(root, selected):
         clear_queries()
 
         frame = Frame(root)
+        frame.configure(bg='#325985')
 
-        result = TABLES[selected]['object'].query_table_2d(
-            (var1.get(), float(value1.get())), (var2.get(), float(value2.get())))
+        v1, v2 = (var1.get(), float(value1.get())), (var2.get(), float(value2.get()))
+        result = TABLES[selected]['object'].query_table_2d(v1, v2)
         table = table_from_2d(frame, result)
-        table.pack(side=TOP, fill=X, pady=10)
+        table.pack(anchor=CENTER, padx=10, pady=10)
 
-        frame.place(x=10, y=200)
+        frame.place(relx=0.5, y=300, anchor=CENTER)
+        BUTTONS.append(frame)
 
     fields = TABLES[selected]['fields']
     groups = TABLES[selected]['fields']
@@ -213,36 +218,47 @@ def init_2d_buttons(root, selected):
         unit1.set(get_field(var1.get()).unit)
         unit2.set(get_field(var2.get()).unit)
 
-    unit_label1 = Label(root, textvariable=unit1)
-    unit_label1.place(x=240, y=40)
+    unit_label1 = Label(root, textvariable=unit1, fg='#A7BFDD', bg='#2D3142', font=('Consolas', 12, 'bold'))
+    unit_label1.place(x=350, y=40)
 
-    unit_label2 = Label(root, textvariable=unit2)
-    unit_label2.place(x=240, y=80)
+    unit_label2 = Label(root, textvariable=unit2, fg='#A7BFDD', bg='#2D3142', font=('Consolas', 12, 'bold'))
+    unit_label2.place(x=350, y=90)
 
     value1, value2 = StringVar(), StringVar()
 
-    txt1 = Entry(root, width=15, textvariable=value1)
+    txt1 = Entry(root, width=15, textvariable=value1, fg='#F7DEE0', bg='#D1495B', font=('Consolas', 12, 'bold'))
     txt1.place(x=20, y=40)
 
-    cbox1 = ttk.Combobox(root, values=fields, width=10, textvariable=var1)
+    cbox1 = ttk.Combobox(root, values=fields, width=10, textvariable=var1,
+                         state='readonly', font=('Consolas', 12, 'bold'))
     cbox1.bind("<<ComboboxSelected>>", update_unit)
-    cbox1.place(x=150, y=40)
+    cbox1.place(x=200, y=40)
 
-    txt2 = Entry(root, width=15, textvariable=value2)
-    txt2.place(x=20, y=90)
+    txt2 = Entry(root, width=15, textvariable=value2, fg='#F7DEE0', bg='#D1495B', font=('Consolas', 12, 'bold'))
+    txt2.place(x=20, y=100)
 
-    cbox2 = ttk.Combobox(root, values=groups, width=10, textvariable=var2)
-    cbox2.place(x=150, y=90)
+    cbox2 = ttk.Combobox(root, values=groups, width=10, textvariable=var2,
+                         state='readonly', font=('Consolas', 12, 'bold'))
+    cbox2.place(x=200, y=100)
     cbox2.bind("<<ComboboxSelected>>", update_unit)
 
-    button = Button(text='Query!', command=query)
-    button.place(x=20, y=120)
-
-    label1 = Label(root, text='First value from table')
-    label2 = Label(root, text='Second value from table')
+    label1 = Label(root, text='First value from table', fg='white', bg='#2D3142', font=('Consolas', 12, 'bold'))
+    label2 = Label(root, text='Second value from table', fg='white', bg='#2D3142', font=('Consolas', 12, 'bold'))
 
     label1.place(x=20, y=15)
-    label2.place(x=20, y=65)
+    label2.place(x=20, y=75)
+
+    button = Button(text='Query!', command=query, fg='black', width=15,
+                    height=1, font=Font(family='Consolas', weight='bold', size=20))
+    button.place(x=20, y=140)
+
+    def color_changer():
+        while True:
+            sleep(0.01)
+
+            button.configure(bg=makeColorGradient(time_ns() / 10e8 * 2, center=180, width=75))
+
+    Thread(target=color_changer).start()
 
     BUTTONS.extend([unit_label1, unit_label2, txt1, txt2, cbox1, cbox2, button, label1, label2])
 
@@ -250,7 +266,8 @@ def init_2d_buttons(root, selected):
 def main():
     root = Tk()
     root.title('Fisica Tecninator 4200 (versione per informatici)')
-    root.geometry('1000x600')
+    root.geometry('1200x600')
+    root.configure(background='#2D3142')
     # root.iconbitmap('icon.ico')
 
     selectedTable = StringVar()
@@ -273,28 +290,10 @@ def main():
     load_buttons()
 
     def on_closing():
-        sched.shutdown(wait=True)
         exit(0)
 
     root.protocol("WM_DELETE_WINDOW", on_closing)
-
-    sched.start()
     root.mainloop()
-
-    # # fields_ids = ["P_sat_bar", "T_sat", "v_l", "dv", "v_v", "h_l", "dh", "h_v", "s_l", "ds", "s_v"]
-    # # water_sat_p = read_form("Tabelle_Acqua_Fix.txt", fields_ids, start=5, end=84)
-    # # water_sat_p.print_response(water_sat_p.query_table_1d(("P_sat_bar", 146.0)))
-    # # parser = argparse.ArgumentParser(description="Read data from Fisica Tecnica per Informatici tables")
-    # # parser.add_argument("sost")
-    # # print(TABLES[0]["object"]._groups)
-    # # ESEMPIO Query di vapore saturo (Necessita di due parametri indipedenti)
-    # print(TABLES[4]["object"].query_table_2d(("T", 320), ("P_bar", 5.5)))
-    # # ESEMPIO Query con quality
-    # # 1 - Fai una normale query nella tabella di saturazione
-    # resp1 = TABLES[0]["object"].query_table_1d(("P_sat_bar", 0.95))
-    # print(resp1)
-    # # # 2 - Usando quella riga fai una query fornendo una grandezza tra "h", "l", "s", "u", "x"
-    # print(TABLES[0]["object"].query_table_1d_qlt(resp1.row, ("x", 0.5)))
 
 
 def makeColorGradient(freq, phase1=0, phase2=2, phase3=4, center=128, width=127):
