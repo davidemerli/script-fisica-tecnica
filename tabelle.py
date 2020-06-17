@@ -265,7 +265,7 @@ def init_2d_buttons(root, selected):
 
 def main():
     root = Tk()
-    root.title('Fisica Tecninator 4200 (versione per informatici)')
+    root.title('Fisica Tecninator 4200 v 0.1')
     root.geometry('1200x600')
     root.configure(background='#2D3142')
     # root.iconbitmap('icon.ico')
