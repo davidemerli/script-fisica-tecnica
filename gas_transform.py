@@ -19,7 +19,7 @@ class Converter:
         self.k = self.cp / self.cv
         self.mass = mass
 
-    def calculate_specific_status(self, values):
+    def calculate_specific_status(self, values : dict):
         if "V" in values and self.mass is None:
             raise ValueError("Mass not defined")
         if values == {"P", "v"}:
@@ -38,4 +38,6 @@ class Converter:
             raise ValueError("Malformed Query")
         return values
 
-    # def calculate_transformation(self, start_values, end_values, index = None, isovol = False):
+    # def calculate_transformation(self, start_values : dict, end_values : dict, index = None, isovol = False):
+
+
