@@ -1,10 +1,14 @@
 import tables
+from urllib.request import urlopen
 from tkinter import *
 from tkinter import ttk
 from math import sin
 from time import time_ns, sleep
 from tkinter.font import Font
 from threading import Thread
+import json
+
+VERSION_LINK = 'https://raw.githubusercontent.com/davidemerli/script-fisica-tecnica/master/version.json'
 
 TABLES = tables.load_tables("tables.json")
 QUERY_TABLES = []
@@ -31,6 +35,7 @@ class Table:
                 self.e.configure(background='#A7BFDD')
                 self.e.grid(row=i, column=j)
                 self.e.insert(END, entries[i][j])
+                self.e.configure(state='readonly')
 
     def pack(self, **args):
         self.frame.pack(args)
@@ -116,18 +121,27 @@ def init_1d_buttons(root, selected):
         frame = Frame(root)
         frame.configure(bg='#325985')
 
-        result = TABLES[selected]['object'].query_table_1d((var1.get(), float(value1.get())))
-        table = table_from_1d(frame, result)
-        table.pack(anchor=CENTER, padx=10, pady=10)
+        result = None
 
         try:
-            result_qlt = TABLES[selected]["object"].query_table_1d_qlt(result.row, (var2.get(), float(value2.get())))
+            result = TABLES[selected]['object'].query_table_1d((var1.get(), float(value1.get())))
 
-            table = table_from_quality(frame, result_qlt)
+            table = table_from_1d(frame, result)
             table.pack(anchor=CENTER, padx=10, pady=10)
         except Exception as ex:
-            print(ex.with_traceback(None))
-            pass
+            exception = Label(frame, text=ex.with_traceback(None), fg='red')
+            exception.pack(side=BOTTOM)
+
+        try:
+            if result != None:
+                result_qlt = TABLES[selected]["object"].query_table_1d_qlt(
+                    result.row, (var2.get(), float(value2.get())))
+
+                table = table_from_quality(frame, result_qlt)
+                table.pack(anchor=CENTER, padx=10, pady=10)
+        except Exception as ex:
+            exception = Label(frame, text=ex.with_traceback(None), fg='red')
+            exception.pack(side=BOTTOM)
 
         frame.place(relx=0.5, y=350, anchor=CENTER)
         BUTTONS.append(frame)
@@ -200,9 +214,14 @@ def init_2d_buttons(root, selected):
         frame.configure(bg='#325985')
 
         v1, v2 = (var1.get(), float(value1.get())), (var2.get(), float(value2.get()))
-        result = TABLES[selected]['object'].query_table_2d(v1, v2)
-        table = table_from_2d(frame, result)
-        table.pack(anchor=CENTER, padx=10, pady=10)
+
+        try:
+            result = TABLES[selected]['object'].query_table_2d(v1, v2)
+            table = table_from_2d(frame, result)
+            table.pack(anchor=CENTER, padx=10, pady=10)
+        except Exception as ex:
+            exception = Label(frame, text=ex.with_traceback(None), fg='red')
+            exception.pack(side=BOTTOM)
 
         frame.place(relx=0.5, y=300, anchor=CENTER)
         BUTTONS.append(frame)
@@ -266,14 +285,21 @@ def init_2d_buttons(root, selected):
 
 def main():
     root = Tk()
-    root.title('Fisica Tecninator 4200 v 0.2')
     root.geometry('1200x600')
     root.configure(background='#2D3142')
-    # root.iconbitmap('icon.ico')
+
+    with open('version.json', 'r') as version_file:
+        version = json.load(version_file)['version']
+        root.title(f'Fisica Tecninator 4200 v {version}')
+
+        online_version = json.load(urlopen(VERSION_LINK))['version']
+
+        if version < online_version:
+            label = Label(root, text=f'This (v{version}) is not the newest version({online_version})!')
+            label.configure(fontsize='20', fg='red')
+            label.pack(side=RIGHT)
 
     selectedTable = StringVar()
-
-    query_tables = []
 
     def load_buttons(eventObject=None):
         if TABLES[selectedTable.get()]['dimensions'] == 1:
