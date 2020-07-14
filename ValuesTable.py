@@ -118,6 +118,12 @@ class ValuesTable:
             v_value = row[group_v["v"].id]
             resp_group[group_key] = (1 - x) * l_value + x * v_value
         resp_group["x"] = x
+
+        if "P_sat_bar" in row.keys():
+            P_pascal = row["P_sat_bar"] * 10**5
+            u = resp_group["h"] - (P_pascal * resp_group["v"] * 10**-3)
+            resp_group["u"] = u
+
         resp_group = self.normalize_row(resp_group)
         return response_1d_qlt(group_id, value_1, row, resp_group)
 
@@ -159,7 +165,8 @@ class ValuesTable:
             qlt = tables.calculate_quality(range_1[0], range_1[1], value_1)
             filt_vals_low = list(filter(lambda row: tables.float_equals(row[field_id_1], range_1[0]), ord_rows))
             filt_vals_hi = list(filter(lambda row: tables.float_equals(row[field_id_1], range_1[1]), ord_rows))
-            filt_vals_mid = list(map(lambda c: tables.interpolate_rows(c[0], c[1], qlt), zip(filt_vals_low, filt_vals_hi)))
+            filt_vals_mid = list(map(lambda c: tables.interpolate_rows(
+                c[0], c[1], qlt), zip(filt_vals_low, filt_vals_hi)))
             hit_2, range_2 = tables.ordered_search(filt_vals_mid, value_2, key=lambda x: x[field_id_2])
             if hit_2:
                 range_2 = self.normalize_row(range_2)

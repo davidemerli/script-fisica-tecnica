@@ -10,9 +10,9 @@ field = namedtuple("field", ["id", "name", "description", "group", "unit", "deci
 def read_1d(file_name: str, order_list: list, start=0, end=None):
     with open(f'tables/{file_name}', "r") as table:
         if end is not None:
-            lines = table.readlines()[start:end]
+            lines = table.readlines()[start-1:end]
         else:
-            lines = table.readlines()[start:]
+            lines = table.readlines()[start-1:]
         table = ValuesTable(fields_ids=order_list)
         table.add_rows(lines)
         return table
@@ -55,6 +55,7 @@ def load_fields_from_json(filename: str = "table_fields.json"):
 def ordered_search(array, item, key=lambda y: y):
     hi_idx = 0
     for i, row in enumerate(array):
+        print(i, key(row), item)
         if float_equals(key(row), item):
             return True, row
         if float_greater_than(key(row), item):

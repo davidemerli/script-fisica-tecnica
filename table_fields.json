@@ -126,7 +126,7 @@
     "name": "u_l",
     "unit": "kJ/kg",
     "group": {
-      "group_id": "v",
+      "group_id": "u",
       "type": "l"
     },
     "description": "Energia Interna Specifica di Liquido Saturo",
@@ -137,7 +137,7 @@
     "name": "u_v",
     "unit": "kJ/kg",
     "group": {
-      "group_id": "v",
+      "group_id": "u",
       "type": "v"
     },
     "description": "Energia Interna Specifica di Vapore Saturo",
